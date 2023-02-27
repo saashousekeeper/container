@@ -1,0 +1,17 @@
+version: '3.3'
+
+## 本地调试连接rabbitmq,mysql组件，需要将docker网络映射至主机。在host文件增加配置: 127.0.0.1 kubernetes.docker.internal
+
+services:
+  #eureka
+  eureka-server:
+    image: https://hub.docker.com/repositories/saashousekeeper/eureka
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 250M
+        reservations:
+          memory: 250M
+    ports:
+      - "8761:8761"
