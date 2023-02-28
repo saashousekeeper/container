@@ -1,0 +1,32 @@
+version: '3.3'
+
+## 本地调试连接rabbitmq,mysql组件，需要将docker网络映射至主机。在host文件增加配置: 127.0.0.1 kubernetes.docker.internal
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.9-alpine
+    container_name: rabbitmq
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    expose:
+      - 5672
+    volumes:
+      - type: bind
+        source: ./rabbitmq-enabled-plugins
+        target: /etc/rabbitmq/enabled_plugins
+      - type: bind
+        source: ./rabbitmq.config
+        target: /etc/rabbitmq/rabbitmq.config
+      - type: bind
+        source: ./rabbitmq-defs.json
+        target: /etc/rabbitmq/rabbitmq-defs.json
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 200M
+        reservations:
+          cpus: '0.25'
+          memory: 100M
